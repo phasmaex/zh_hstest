@@ -29,6 +29,10 @@ function playStream() {
   } 
 }
 
+
+$(function() {
+	$('#loadcontent').load('http://preview.rhinelander.info/hsapptest/loaddata.html');
+});
         </script>
 
 
@@ -53,7 +57,7 @@ function playStream() {
 		
 		<button onclick="playStream()">Listen Live</button>
 	
-	
+	<div id="loadcontent">Loading...</div>
 	
 	
 	</div><!-- /content -->
