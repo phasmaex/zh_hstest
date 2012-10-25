@@ -25,10 +25,10 @@ function checkconnection() {
 	switch (networkState) {
 		case Connection.UNKNOWN:
 		case Connection.NONE:
-			return 0;
+			return false;
 			break;
 		default:
-			return 1;
+			return true;
 			break;
 	}
 }
@@ -49,7 +49,7 @@ var hsdata_quickscores;
 
 function loaddata_quickscores() {
 alert('loaded quickscores');
-	if (checkconnection()==1) {
+	if (checkconnection()) {
 		isnoconnection = false;
 		$.get('http://www.hodagsports.com/apploaddata.html',{'loaddatatype':'quickscores'},function(data, textStatus) {
 			hsdata_quickscores = data;
@@ -66,11 +66,11 @@ alert('loaded quickscores');
 $(function() {
 	loaddata_quickscores();
 	
-	if (isconnection==false) {
-		$('#loadcontent').html("<div style='text-align:center;'><b>Quick Scores</b><br><i>"+hsdata_quickscores.dataobj[0].sport+"</i><br>"+hsdata_quickscores.dataobj[0].gamedate+"<br>"+hsdata_quickscores.dataobj[0].hteam+" - "+hsdata_quickscores.dataobj[0].hscore+"<br>"+hsdata_quickscores.dataobj[0].vteam+" - "+hsdata_quickscores.dataobj[0].vscore+"<br>"+hsdata_quickscores.dataobj[0].gamec+"<br></div>");
+	if (isconnection {
+		$('#loadcontent').html("No Connection");
 	}
 	else {
-		$('#loadcontent').html("No Connection");
+		$('#loadcontent').html("<div style='text-align:center;'><b>Quick Scores</b><br><i>"+hsdata_quickscores.dataobj[0].sport+"</i><br>"+hsdata_quickscores.dataobj[0].gamedate+"<br>"+hsdata_quickscores.dataobj[0].hteam+" - "+hsdata_quickscores.dataobj[0].hscore+"<br>"+hsdata_quickscores.dataobj[0].vteam+" - "+hsdata_quickscores.dataobj[0].vscore+"<br>"+hsdata_quickscores.dataobj[0].gamec+"<br></div>");
 	}
 });
         </script>
