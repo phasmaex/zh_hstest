@@ -19,6 +19,21 @@
 
  <script type="text/javascript" charset="utf-8">
 
+function checkconnection() {
+	var networkState = navigator.network.connection.type;
+	
+	switch (networkState) {
+		case Connection.UNKNOWN:
+		case Connection.NONE:
+			return 0;
+			break;
+		default:
+			return 1;
+			break;
+	}
+}
+
+
 function playStream() {
   try {
     var myaudio = new Audio('http://www.hodagsports.com:8000/');
@@ -29,9 +44,31 @@ function playStream() {
   } 
 }
 
+var isnoconnection;
+var hsdata_quickscores;
+
+function loaddata_quickscores() {
+	if (checkconnection()==1) {
+		isnoconnection = false;
+		$.get('http://www.hodagsports.com/apploaddata.html',{'loaddatatype':'quickscores'},function(data, textStatus) {
+			hsdata_quickscores = data;
+			});
+	}
+	else {
+		isnoconnection = true;
+	}
+}
+
 
 $(function() {
-	$('#loadcontent').load('http://preview.rhinelander.info/hsapptest/loaddata.html');
+	loaddata_quickscores();
+	
+	if (isconnection==false) {
+		$('#loadcontent').html("<div style='text-align:center;'><b>Quick Scores</b><br><i>"+hsdata_quickscores.dataobj[0].sport+"</i><br>"+hsdata_quickscores.dataobj[0].gamedate+"<br>"+hsdata_quickscores.dataobj[0].hteam+" - "+hsdata_quickscores.dataobj[0].hscore+"<br>"+hsdata_quickscores.dataobj[0].vteam+" - "+hsdata_quickscores.dataobj[0].vscore+"<br>"+hsdata_quickscores.dataobj[0].gamec+"<br></div>");
+	}
+	else {
+		$('#loadcontent').html("No Connection");
+	}
 });
         </script>
 
@@ -57,7 +94,7 @@ $(function() {
 		
 		<button onclick="playStream()">Listen Live</button>
 	
-	<div id="loadcontent">Loading...</div>
+	<div id="loadcontent"><img src="images/loading_spinner.gif"></div>
 	
 	
 	</div><!-- /content -->
