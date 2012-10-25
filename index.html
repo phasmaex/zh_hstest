@@ -48,14 +48,17 @@ var isnoconnection;
 var hsdata_quickscores;
 
 function loaddata_quickscores() {
+alert('loaded quickscores');
 	if (checkconnection()==1) {
 		isnoconnection = false;
 		$.get('http://www.hodagsports.com/apploaddata.html',{'loaddatatype':'quickscores'},function(data, textStatus) {
 			hsdata_quickscores = data;
 			});
+		alert('loaded');
 	}
 	else {
 		isnoconnection = true;
+		alert('no connection');
 	}
 }
 
