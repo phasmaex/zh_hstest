@@ -18,6 +18,7 @@
 
 
  <script type="text/javascript" charset="utf-8">
+$(function() {
 
 function checkconnection() {
 	var networkState = navigator.network.connection.type;
@@ -75,6 +76,8 @@ alert('running');
 		$('#loadcontent').html("<div style='text-align:center;'><b>Quick Scores</b><br><i>"+hsdata_quickscores.dataobj[0].sport+"</i><br>"+hsdata_quickscores.dataobj[0].gamedate+"<br>"+hsdata_quickscores.dataobj[0].hteam+" - "+hsdata_quickscores.dataobj[0].hscore+"<br>"+hsdata_quickscores.dataobj[0].vteam+" - "+hsdata_quickscores.dataobj[0].vscore+"<br>"+hsdata_quickscores.dataobj[0].gamec+"<br></div>");
 	}
 }
+
+});
         </script>
 
 
