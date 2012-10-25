@@ -23,6 +23,18 @@ $(function() {
 function checkconnection() {
 	var networkState = navigator.network.connection.type;
 	
+	 var states = {};
+        states[Connection.UNKNOWN]  = 'Unknown connection';
+        states[Connection.ETHERNET] = 'Ethernet connection';
+        states[Connection.WIFI]     = 'WiFi connection';
+        states[Connection.CELL_2G]  = 'Cell 2G connection';
+        states[Connection.CELL_3G]  = 'Cell 3G connection';
+        states[Connection.CELL_4G]  = 'Cell 4G connection';
+        states[Connection.NONE]     = 'No network connection';
+
+        alert('Connection type: ' + states[networkState]);
+
+	
 	switch (networkState) {
 		case Connection.UNKNOWN:
 		case Connection.NONE:
@@ -53,7 +65,8 @@ alert('loaded quickscores');
 	myconnection = checkconnection();
 	if (myconnection) {
 		isnoconnection = false;
-		$.get('http://www.hodagsports.com/apploaddata.html',{'loaddatatype':'quickscores'},function(data, textStatus) {
+		$.get('http://www.hodagsports.com/apploaddata.html?loaddatatype=quickscores','',function(data, textStatus) {
+			alert('successload');
 			hsdata_quickscores = data;
 			});
 		alert('loaded');
@@ -68,13 +81,14 @@ alert('loaded quickscores');
 function runmain() {
 alert('running');
 	loaddata_quickscores();
-	
+	/*
 	if (isconnection) {
 		$('#loadcontent').html("No Connection");
 	}
 	else {
 		$('#loadcontent').html("<div style='text-align:center;'><b>Quick Scores</b><br><i>"+hsdata_quickscores.dataobj[0].sport+"</i><br>"+hsdata_quickscores.dataobj[0].gamedate+"<br>"+hsdata_quickscores.dataobj[0].hteam+" - "+hsdata_quickscores.dataobj[0].hscore+"<br>"+hsdata_quickscores.dataobj[0].vteam+" - "+hsdata_quickscores.dataobj[0].vscore+"<br>"+hsdata_quickscores.dataobj[0].gamec+"<br></div>");
 	}
+	*/
 }
 
 
