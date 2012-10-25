@@ -49,7 +49,8 @@ var hsdata_quickscores;
 
 function loaddata_quickscores() {
 alert('loaded quickscores');
-	if (checkconnection()) {
+	myconnection = checkconnection();
+	if (myconnection) {
 		isnoconnection = false;
 		$.get('http://www.hodagsports.com/apploaddata.html',{'loaddatatype':'quickscores'},function(data, textStatus) {
 			hsdata_quickscores = data;
@@ -64,6 +65,7 @@ alert('loaded quickscores');
 
 
 $(function() {
+alert('running');
 	loaddata_quickscores();
 	
 	if (isconnection {
@@ -97,7 +99,7 @@ $(function() {
 		
 		<button onclick="playStream()">Listen Live</button>
 	
-	<div id="loadcontent"><img src="images/loading_spinner.gif"></div>
+	<div id="loadcontent">Loading...</div>
 	
 	
 	</div><!-- /content -->
