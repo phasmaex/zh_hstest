@@ -58,31 +58,38 @@ function playStream() {
 }
 
 var isnoconnection;
-var hsdata_quickscores;
+var hsdata_quickscores = [];
 
 function loaddata_quickscores() {
-alert('loaded quickscores');
-
-		$.get('http://www.hodagsports.com/apploaddata.html?loaddatatype=quickscores','',function(data, textStatus) {
-			alert('successload');
-			hsdata_quickscores = data;
-			});
-		alert('loaded');
-
+//alert('loading quickscores');
+	$.get('http://www.hodagsports.com/loaddata2.html',processquickscores,"json");
 }
-
+function processquickscores(data) {
+	//alert('processing');
+	hsdata_quickscores = data;
+    $('#loadcontent').html("<div style='width:300px;margin:0px 10px;text-align:center;background-color:#006600;color:#FFFFFF;border-radius:15px;font-size:20px;padding:5px 0px;'>Quick Scores</div>");
+	$.each(hsdata_quickscores.dataobj,function(key,val) {
+	$('#loadcontent').append("<div class='quickscore_container'><div class='quickscore_header'>"+this.sport+"&nbsp;&nbsp;&nbsp;<span style='font-size:10px;'><b>"+this.gamedate+"</b></span></div><br><div class='quickscore_name'>"+this.hteam+"</div><div class='quickscore_score'>"+this.hscore+"</div><br><div class='quickscore_name'>"+this.vteam+"</div><div class='quickscore_score'>"+this.vscore+"</div><br><div class='quickscore_gamec'>"+this.gamec+"</div></div>");
+	});
+	
+}
 
 function runmain() {
-alert('running');
+//alert('running');
 	loaddata_quickscores();
-
-		$('#loadcontent').html("<div style='text-align:center;'><b>Quick Scores</b><br><i>"+hsdata_quickscores.dataobj[0].sport+"</i><br>"+hsdata_quickscores.dataobj[0].gamedate+"<br>"+hsdata_quickscores.dataobj[0].hteam+" - "+hsdata_quickscores.dataobj[0].hscore+"<br>"+hsdata_quickscores.dataobj[0].vteam+" - "+hsdata_quickscores.dataobj[0].vscore+"<br>"+hsdata_quickscores.dataobj[0].gamec+"<br></div>");
+	//alert(hsdata_quickscores);
+		//$('#loadcontent').html("<div style='text-align:center;'><b>Quick Scores</b><br><i>"+hsdata_quickscores.dataobj[0].sport+"</i><br>"+hsdata_quickscores.dataobj[0].gamedate+"<br>"+hsdata_quickscores.dataobj[0].hteam+" - "+hsdata_quickscores.dataobj[0].hscore+"<br>"+hsdata_quickscores.dataobj[0].vteam+" - "+hsdata_quickscores.dataobj[0].vscore+"<br>"+hsdata_quickscores.dataobj[0].gamec+"<br></div>");
+	//$('#loadcontent').html("test");
 	
-
+	/*
+$.each(hsdata_quickscores, function(key, val) {
+    $('#loadcontent').append(key+" - "+val+"<br>")
+  });*/
+  
 }
-
-
 runmain();
+
+
 
 });
         </script>
@@ -99,20 +106,68 @@ runmain();
 		margin:0px;
 		padding:0px;
 	}
+	
+	
+	.quickscore_container {
+		width:300px;
+		margin:5px 10px;
+		background-color:#CCCCCC;
+		border-radius:15px;
+		border:1px solid black;
+	}
+	.quickscore_header {
+		width:280px;
+		margin:5px 10px;
+		background-color:#003300;
+		border-radius:15px;
+		color:#FFFFFF;
+		text-align:center;
+		display:inline-block;
+	}
+	.quickscore_name {
+		width:205px;
+		margin-left:10px;
+		margin-right:5px;
+		margin-top:3px;
+		background-color:#333333;
+		border-radius:15px;
+		color:#FFFFFF;
+		text-align:right;
+		display:inline-block;
+		padding:3px 0px;
+		padding-right:8px;
+	}
+	.quickscore_score {
+		width:55px;
+		margin-top:3px;
+		background-color:#333333;
+		border-radius:15px;
+		color:#FFFFFF;
+		text-align:left;
+		display:inline-block;
+		padding:3px 0px;
+		padding-left:8px;
+	}
+	.quickscore_gamec {
+		width:280px;
+		margin:3px 10px;
+		background-color:#666666;
+		border-radius:15px;
+		color:#FFFFFF;
+		text-align:center;
+		margin-bottom:5px;
+	}
 </style>
 
 </head>
 <body marginheight="0" marginwidth="0" topmargin="0">
 <div data-role="page" id="index">
 	<div id="mainheader"></div>
-	<div data-role="content">
-		
-		<button onclick="playStream()">Listen Live</button>
-	<button onclick="runmain()">Startup</button>
-	<div id="loadcontent">Loading...</div>
+<div style="padding:0px 10px;"><button onclick="playStream()">Listen Live</button></div>
+	<div id="loadcontent" style="margin:0px;padding:0px;width:320px;">Loading...</div>
+
 	
-	
-	</div><!-- /content -->
+
 
 </div><!-- /page -->
 
