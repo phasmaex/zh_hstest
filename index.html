@@ -62,11 +62,12 @@ var hsdata_quickscores = [];
 
 function loaddata_quickscores() {
 //alert('loading quickscores');
-	$.get('http://www.hodagsports.com/apploaddata.html?quickscores',processquickscores,"json");
+	$.get('http://www.hodagsports.com/apploaddata.html?loaddatatype=quickscores',processquickscores,"html");
 }
 function processquickscores(data) {
 	//alert('processing');
-	hsdata_quickscores = data;
+	datahandle = data.replace('<!--HAS_WEBDNA_TAGS-->','');
+	hsdata_quickscores = jQuery.parseJSON(datahandle);
     $('#loadcontent').html("<div style='width:300px;margin:0px 10px;text-align:center;background-color:#006600;color:#FFFFFF;border-radius:15px;font-size:20px;padding:5px 0px;'>Quick Scores</div>");
 	$.each(hsdata_quickscores.dataobj,function(key,val) {
 	$('#loadcontent').append("<div class='quickscore_container'><div class='quickscore_header'>"+this.sport+"&nbsp;&nbsp;&nbsp;<span style='font-size:10px;'><b>"+this.gamedate+"</b></span></div><br><div class='quickscore_name'>"+this.hteam+"</div><div class='quickscore_score'>"+this.hscore+"</div><br><div class='quickscore_name'>"+this.vteam+"</div><div class='quickscore_score'>"+this.vscore+"</div><br><div class='quickscore_gamec'>"+this.gamec+"</div></div>");
