@@ -18,4 +18,8 @@
     </author>
 
 	<gap:splash src="splash.png" />
+	
+	<!--WhiteList Access Commands-->
+	
+	<access origin="http://www.hodagsports.com" />
 </widget>
