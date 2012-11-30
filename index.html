@@ -47,18 +47,17 @@ function checkconnection() {
 }
 
 var isplaying = false;
-var myaudio;
-
-function playStream() {
   try {
-    myaudio = new Audio('http://www.hodagsports.com:8002/');
+    var myaudio = new Audio('http://www.hodagsports.com:8002/');
     myaudio.id = 'playerMyAdio';
-    myaudio.play();
-		isplaying = true;
-		$('#mediastatus').css('display','block');
   } catch (e) {
     alert('no audio support!');
   } 
+
+function playStream() {
+	myaudio.play();
+	isplaying = true;
+	$('#mediastatus').css('display','block');
 }
 function stopStream() {
 	myaudio.stop();
