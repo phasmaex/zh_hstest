@@ -47,17 +47,18 @@ function checkconnection() {
 }
 
 var isplaying = false;
+
+
+function playStream() {
   try {
     var myaudio = new Audio('http://www.hodagsports.com:8000/');
     myaudio.id = 'playerMyAdio';
+	myaudio.play();
   } catch (e) {
     alert('no audio support!');
   } 
-
-function playStream() {
-	myaudio.play();
-	isplaying = true;
-	$('#mediastatus').css('display','block');
+	//isplaying = true;
+	//$('#mediastatus').css('display','block');
 }
 function stopStream() {
 	myaudio.stop();
