@@ -59,13 +59,11 @@ function playStream() {
 
 var isnoconnection;
 var hsdata_quickscores = [];
+var hsdata_pbp = [];
 
-function loaddata_quickscores() {
-//alert('loading quickscores');
-	$.get('http://www.hodagsports.com/apploaddata.html?loaddatatype=quickscores',processquickscores,"json");
-}
+function loaddata_quickscores() {$.get('http://www.hodagsports.com/apploaddata.html?loaddatatype=quickscores',processquickscores,"json");}
+function loaddata_pbp() {$.get('http://www.hodagsports.com/apploaddata.html?loaddatatype=pbp',processpbp,"json");}
 function processquickscores(data) {
-	//alert('processing');
 	hsdata_quickscores = data;
     $('#loadcontent').html("<div style='width:300px;margin:0px 10px;text-align:center;background-color:#006600;color:#FFFFFF;border-radius:15px;font-size:20px;padding:5px 0px;'>Quick Scores</div>");
 	$.each(hsdata_quickscores.dataobj,function(key,val) {
@@ -73,19 +71,20 @@ function processquickscores(data) {
 	});
 	
 }
+function processpbp(data) {
+	hsdata_pbp = data;
+		if (hsdata_pbp.pbp=="Y") {
+			alert('pbp on');
+			$('#pbpcontainer').css('display','block');
+		}
+		else {
+			$('#pbpcontainer').css('display','none');
+		}
+}
 
 function runmain() {
-//alert('running');
 	loaddata_quickscores();
-	//alert(hsdata_quickscores);
-		//$('#loadcontent').html("<div style='text-align:center;'><b>Quick Scores</b><br><i>"+hsdata_quickscores.dataobj[0].sport+"</i><br>"+hsdata_quickscores.dataobj[0].gamedate+"<br>"+hsdata_quickscores.dataobj[0].hteam+" - "+hsdata_quickscores.dataobj[0].hscore+"<br>"+hsdata_quickscores.dataobj[0].vteam+" - "+hsdata_quickscores.dataobj[0].vscore+"<br>"+hsdata_quickscores.dataobj[0].gamec+"<br></div>");
-	//$('#loadcontent').html("test");
-	
-	/*
-$.each(hsdata_quickscores, function(key, val) {
-    $('#loadcontent').append(key+" - "+val+"<br>")
-  });*/
-  
+	loaddata_pbp();
 }
 runmain();
 
@@ -163,7 +162,9 @@ runmain();
 <body marginheight="0" marginwidth="0" topmargin="0">
 <div data-role="page" id="index">
 	<div id="mainheader"></div>
+	<div id="pbpcontainer">
 <div style="padding:0px 10px;"><button onclick="playStream()">Listen Live</button></div>
+	</div>
 	<div id="loadcontent" style="margin:0px;padding:0px;width:320px;">Loading...</div>
 
 	
