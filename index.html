@@ -46,15 +46,24 @@ function checkconnection() {
 	}
 }
 
+var isplaying = false;
+var myaudio;
 
 function playStream() {
   try {
-    var myaudio = new Audio('http://www.hodagsports.com:8000/');
+    myaudio = new Audio('http://www.hodagsports.com:8000/');
     myaudio.id = 'playerMyAdio';
     myaudio.play();
+		isplaying = true;
+		$('#mediastatus').css('display','block');
   } catch (e) {
     alert('no audio support!');
   } 
+}
+function stopStream() {
+	myaudio.stop();
+	isplaying = false;
+	$('#mediastatus').css('display','none');
 }
 
 var isnoconnection;
@@ -63,6 +72,7 @@ var hsdata_pbp = [];
 
 function loaddata_quickscores() {$.get('http://www.hodagsports.com/apploaddata.html?loaddatatype=quickscores',processquickscores,"json");}
 function loaddata_pbp() {$.get('http://www.hodagsports.com/apploaddata.html?loaddatatype=pbp',processpbp,"json");}
+//function loaddata_pbp() {$.get('loaddata2.html',processpbp,"json");}
 function processquickscores(data) {
 	hsdata_quickscores = data;
     $('#loadcontent').html("<div style='width:300px;margin:0px 10px;text-align:center;background-color:#006600;color:#FFFFFF;border-radius:15px;font-size:20px;padding:5px 0px;'>Quick Scores</div>");
@@ -73,9 +83,29 @@ function processquickscores(data) {
 }
 function processpbp(data) {
 	hsdata_pbp = data;
-		if (hsdata_pbp.pbp="y") {
-			alert('pbp on');
+		//alert('processpbp');
+		if (hsdata_pbp.pbp=='y') {
+			//showcontainer
 			$('#pbpcontainer').css('display','block');
+				//check for live
+				if (hsdata_pbp.onair=='y') {
+					//show media controls
+					$('#pbpmediacontrols').css('display','block');
+				}
+				else {
+					$('#pbpmediacontrols').css('display','none');
+				}
+			//create score table
+			$('#pbpcontent').html("<h3 align='center' style='margin:0px;'>LIVE Play-By-Play</h3><img src='images/radioguy.png' style='float:right;'><div style='text-align:center;'><b>"+hsdata_pbp.sport+"</b><Br>"+hsdata_pbp.homet+" Vs. "+hsdata_pbp.oppt+"<br>At "+hsdata_pbp.place+"<Br><b>"+hsdata_pbp.bdate+"</b></div>");
+				if (hsdata_pbp.pretimeon=='y') {
+					$('#pbpcontent').append("<div class='quickscore_gamec'><b>Pregame To Start At "+hsdata_pbp.pregametime+"</b><br>"+hsdata_pbp.gametime+"</div>");
+				}
+				else {
+					var htotal = parseInt(hsdata_pbp.hscoreq1)+parseInt(hsdata_pbp.hscoreq2)+parseInt(hsdata_pbp.hscoreq3)+parseInt(hsdata_pbp.hscoreq4)+parseInt(hsdata_pbp.hscoreot);
+					var vtotal = parseInt(hsdata_pbp.vscoreq1)+parseInt(hsdata_pbp.vscoreq2)+parseInt(hsdata_pbp.vscoreq3)+parseInt(hsdata_pbp.vscoreq4)+parseInt(hsdata_pbp.vscoreot);
+					//$('#pbpcontent').append("<div style='text-align:center;'><table style='width:300px;' cellspacing='0' cellpadding='0'><tr><th>Team</th><th>Q1</th><th>Q2</th><th>Q3</th><th>Q4</th><th>OT</th><th>Total</th></tr><tr><td>"+hsdata_pbp.homet+"</td><td>"+hsdata_pbp.hscoreq1+"</td><td>"+hsdata_pbp.hscoreq2+"</td><td>"+hsdata_pbp.hscoreq3+"</td><td>"+hsdata_pbp.hscoreq4+"</td><td>"+hsdata_pbp.hscoreot+"</td><td><b>"+htotal+"</b></td></tr><tr><td>"+hsdata_pbp.oppt+"</td><td>"+hsdata_pbp.vscoreq1+"</td><td>"+hsdata_pbp.vscoreq2+"</td><td>"+hsdata_pbp.vscoreq3+"</td><td>"+hsdata_pbp.vscoreq4+"</td><td>"+hsdata_pbp.vscoreot+"</td><td><b>"+vtotal+"</b></td></tr></table><div style='width:300px;text-align:center;'>"+hsdata_pbp.gametime+"</div>");
+					$('#pbpcontent').append("<div class='quickscore_name'>"+hsdata_pbp.homet+"</div><div class='quickscore_score'>"+htotal+"</div><br><div class='quickscore_name'>"+hsdata_pbp.oppt+"</div><div class='quickscore_score'>"+vtotal+"</div><br><div class='quickscore_gamec'>"+hsdata_pbp.gametime+"</div>");
+				}
 		}
 		else {
 			$('#pbpcontainer').css('display','none');
@@ -83,7 +113,7 @@ function processpbp(data) {
 }
 
 function runmain() {
-	loaddata_quickscores();
+	//loaddata_quickscores();
 	loaddata_pbp();
 }
 runmain();
@@ -163,10 +193,20 @@ runmain();
 <div data-role="page" id="index">
 	<div id="mainheader"></div>
 	<div id="pbpcontainer">
+	<div class='quickscore_container'>
+		<div id="pbpmediacontrols">
 <div style="padding:0px 10px;"><button onclick="playStream()">Listen Live</button></div>
+		</div>
+		<div id="pbpcontent">
+		
+		</div>
+		</div>
 	</div>
 	<div id="loadcontent" style="margin:0px;padding:0px;width:320px;">Loading...</div>
-
+<div id="mediastatus" style="width:95%;height:40px;background-color:#333333;border-top:2px solid #999999;border-left:2px solid #999999;border-right:2px solid #999999;margin:0px auto;border-top-left-radius:5px;border-top-right-radius:5px;psotion:fixed;bottom:0px;left:0px;color:#999999;font-size:14px;display:none;">
+<span style="margin-left:3px;margin-top:8px;display:inline-block;">Now Playing Live PBP Broadcast</span>
+<a onclick="stopStream()" data-role="button" data-icon="delete" data-mini="true" style="float:right;margin-right:5px;">Stop</a> 
+</div>
 	
 
 
