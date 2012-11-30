@@ -18,6 +18,7 @@
     </author>
 
 	<gap:splash src="splash.png" />
+	<icon src="icon.png" />
 	
 	<!--WhiteList Access Commands-->
 	
